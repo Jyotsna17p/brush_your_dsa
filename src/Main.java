@@ -8,6 +8,7 @@ import designpatters.creational.factory.CreateFile;
 import designpatters.creational.factory.CreateFileFactory;
 import designpatters.creational.singleton.Singleton;
 import streams.Department;
+import streams.Emp;
 import streams.Employee;
 import streams.StreamApiExample;
 
@@ -60,6 +61,17 @@ public class Main {
 
         StreamApiExample.streamExample();
         StreamApiExample.streamExample1(employeeList);
+
+        List<Emp> employees = new ArrayList<>();
+
+        employees.add(new Emp(1, "Alice", 0, "HR", 60000));
+        employees.add(new Emp(2, "Bob", 1, "HR", 55000));
+        employees.add(new Emp(3, "Charlie", 1, "Engineering", 75000));
+        employees.add(new Emp(4, "David", 3, "Engineering", 70000));
+        employees.add(new Emp(5, "Eve", 3, "Engineering", 72000));
+        employees.add(new Emp(6, "Frank", 1, "Sales", 50000));
+
+        StreamApiExample.streamExmaple2(employees);
     }
 
     private static void findKLargestAndSmallestElement() {

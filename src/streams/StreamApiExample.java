@@ -4,6 +4,8 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
+
 public class StreamApiExample {
 
     public static void groupByExample(List<Employee> employee){
@@ -13,11 +15,11 @@ public class StreamApiExample {
                 .collect(Collectors.groupingBy(Employee::getGender));
 
         Map<String, List<String>> map1 = employee.stream()
-                .collect(Collectors.groupingBy(Employee::getGender, Collectors.mapping(Employee::getName, Collectors.toList())));
+                .collect(Collectors.groupingBy(Employee::getGender, Collectors.mapping(Employee::getName, toList())));
 
 
         Map<String, List<String>> map2 = employee.stream().filter(data -> data.getDepartment().getDeparmentName().equals("IT"))
-                        .collect(Collectors.groupingBy(Employee::getGender, Collectors.mapping(Employee::getName, Collectors.toList())));
+                        .collect(Collectors.groupingBy(Employee::getGender, Collectors.mapping(Employee::getName, toList())));
 
         Map<String, Long> map3 = employee.stream().collect(Collectors.groupingBy(emp -> emp.getDepartment().getDeparmentName(), Collectors.counting()));
         Map<String, List<Employee>> map4 = employee.stream().collect(Collectors.groupingBy(emp -> emp.getDepartment().getId()));
@@ -92,6 +94,29 @@ public class StreamApiExample {
         System.out.println(emp);
         Map<String, Long> emp1=  employeeList.stream().collect(Collectors.groupingBy(eem -> eem.getDepartment().getDeparmentName(), Collectors.counting()));
         System.out.println(emp1);
+
+    }
+
+    public static void streamExmaple2(List<Emp> empList){
+
+        Map<Integer, Emp> map = empList.stream().collect(Collectors.toMap(emp -> emp.getId(), emp -> emp));
+
+        empList = empList.stream().filter(emp -> emp.getSupervisorId() != 0 && map.containsKey(emp.getSupervisorId()))
+                    .filter(emp -> emp.getSalary() > map.get(emp.getSupervisorId()).getSalary()).toList();
+
+        empList = empList.stream().filter(emp -> {
+                int supId = emp.getSupervisorId();
+                while(supId != 0 && map.containsKey(supId)){
+                    Emp e = map.get(supId);
+                    if(emp.getSalary() <= e.getSalary()){
+                        return false;
+                    }
+                    supId = e.getSupervisorId();
+                }
+            return true;
+        }).toList();
+
+        System.out.println(empList);
 
     }
 }
